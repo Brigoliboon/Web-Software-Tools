@@ -1,31 +1,39 @@
-# Todo Native Auth - Laravel Application
+# Todo Application with Native Laravel Authentication
 
-A Laravel web application with native authentication system, user profile management, and To-Do CRUD functionality. Built manually without using authentication scaffolding packages.
+<p align="center">
+  <a href="https://github.com/jeffstacks/activity2-todo-native-auth"><img src="https://img.shields.io/badge/GitHub-View%20Code-blue?logo=github" alt="GitHub Repository"></a>
+  <a href="#"><img src="https://img.shields.io/badge/Laravel-11+-red?logo=laravel" alt="Laravel Version"></a>
+  <a href="#"><img src="https://img.shields.io/badge/PHP-8.1%2B-blue?logo=php" alt="PHP Version"></a>
+</p>
 
-## Features
+## Overview
 
-### A. Native Authentication System
-- User registration with validation
-- User login with session-based authentication
-- User logout
-- Password hashing using bcrypt
-- Route protection using custom middleware
+This Todo Application showcases a secure authentication system built from scratch in Laravel, without relying on authentication scaffolding packages. The project demonstrates understanding of Laravel's core concepts including MVC architecture, middleware, authentication, and database relationships.
 
-### B. User Profile Management
-- View authenticated user profile
-- Edit user name and email
-- Optional password update
-- Profile page accessible only to logged-in users
+## Features Implemented
 
-### C. To-Do List CRUD Application
-- Create tasks
-- Display tasks belonging only to the logged-in user
-- Edit tasks
-- Delete tasks
+### 🔐 Native Authentication System
+- Custom user registration with server-side validation
+- Secure login/logout with session-based authentication
+- Password hashing using Laravel's bcrypt implementation
+- Custom authentication middleware for route protection
+- CSRF protection on all forms
+
+### 👤 User Profile Management
+- Secure profile viewing (accessible only to authenticated users)
+- Profile editing capabilities (name, email)
+- Optional password update with confirmation
 - User-specific data isolation
 
-## Project Structure
+### 📝 Todo CRUD Functionality
+- Create, Read, Update, Delete operations for tasks
+- User-specific task visibility (users only see their own tasks)
+- Task completion status tracking
+- Form validation on all inputs
 
+## Technical Implementation
+
+### Project Structure
 ```
 todo-native-auth/
 ├── app/
@@ -58,128 +66,55 @@ todo-native-auth/
             └── edit.blade.php
 ```
 
-## Setup Instructions
+### Database Design
+- **Users Table**: id, name, email, password, remember_token, timestamps
+- **Tasks Table**: id, user_id (foreign key), title, description, completed, timestamps
+
+## Setup & Installation
 
 ### Prerequisites
 - PHP 8.1+
 - Composer
 - MySQL or SQLite
+- Node.js & NPM (for asset compilation, if applicable)
 
-### Installation
-
-1. **Create the project**
+### Installation Steps
+1. **Clone the repository**
    ```bash
-   composer create-project laravel/laravel todo-native-auth
-   cd todo-native-auth
+   git clone https://github.com/jeffstacks/activity2-todo-native-auth.git
+   cd activity2-todo-native-auth
    ```
 
-2. **Configure Database**
-   
-   Edit `.env` file:
+2. **Install dependencies**
+   ```bash
+   composer install
+   npm install && npm run dev  # if using frontend assets
+   ```
+
+3. **Environment setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. **Configure database** in `.env`:
    ```env
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=todo_native
-   DB_USERNAME=root
-   DB_PASSWORD=
+   DB_DATABASE=todo_native_auth
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
    ```
 
-3. **Create Database**
-   ```bash
-   mysql -u root -p -e "CREATE DATABASE todo_native;"
-   ```
-
-4. **Run Migrations**
+5. **Run migrations**
    ```bash
    php artisan migrate
    ```
 
-5. **Start Development Server**
+6. **Start development server**
    ```bash
    php artisan serve
    ```
 
-## Implementation Details
-
-### Authentication Controller
-- `showRegister()` - Display registration form
-- `register()` - Handle user registration
-- `showLogin()` - Display login form
-- `login()` - Handle user login with session
-- `logout()` - Handle user logout
-
-### Profile Controller
-- `show()` - Display user profile
-- `update()` - Update user profile information
-
-### Task Controller
-- `index()` - List all tasks for authenticated user
-- `create()` - Show create task form
-- `store()` - Store new task
-- `edit()` - Show edit task form
-- `update()` - Update existing task
-- `destroy()` - Delete task
-
-### Middleware
-- `AuthCheck` - Protects routes requiring authentication
-
-## Routes
-
-| Method | Route | Controller | Description |
-|--------|-------|------------|-------------|
-| GET | /register | AuthController | Show registration form |
-| POST | /register | AuthController | Handle registration |
-| GET | /login | AuthController | Show login form |
-| POST | /login | AuthController | Handle login |
-| POST | /logout | AuthController | Handle logout |
-| GET | /profile | ProfileController | Show profile |
-| POST | /profile | ProfileController | Update profile |
-| GET | /tasks | TaskController | List tasks |
-| GET | /tasks/create | TaskController | Create task form |
-| POST | /tasks | TaskController | Store task |
-| GET | /tasks/{id}/edit | TaskController | Edit task form |
-| PUT | /tasks/{id} | TaskController | Update task |
-| DELETE | /tasks/{id} | TaskController | Delete task |
-
-## UI Design
-
-This project features a custom-designed user interface with:
-- Unique color scheme
-- Custom layout structure
-- Responsive design
-- Original typography and spacing
-
-**Note:** This UI is student-designed and must not be copied. Each student must create their own unique design.
-
-## Security Features
-
-- Passwords are hashed using bcrypt
-- Session-based authentication
-- User data isolation (users can only see their own tasks)
-- Route protection with custom middleware
-- Input validation on all forms
-
-## Tech Stack
-
-- **Framework:** Laravel 11+
-- **Database:** MySQL/SQLite
-- **Authentication:** Native Session-based
-- **Templating:** Blade Templates
-- **CSS:** Custom CSS (no default Laravel styles)
-
-## Grading Rubrics
-
-| Criteria | Points |
-|----------|--------|
-| Native Authentication Implementation | 20 |
-| User Profile Management | 15 |
-| To-Do CRUD Functionality | 25 |
-| MVC Structure and Flow | 20 |
-| UI Design and Uniqueness | 15 |
-| GitHub Repository and Commits | 5 |
-| **Total** | **100** |
-
-## License
-
-This project is for educational purposes.
+Visit `http://localhost:8000` to access the application.
