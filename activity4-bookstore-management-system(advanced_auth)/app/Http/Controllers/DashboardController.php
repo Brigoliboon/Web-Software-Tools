@@ -48,7 +48,10 @@ class DashboardController extends Controller
             ->pluck('count', 'status')
             ->toArray();
 
-        return view('dashboard.admin', compact('stats', 'recentOrders', 'orderStatusSummary'));
+        // Pending orders for admin review
+        $pendingOrdersCount = Order::where('status', 'pending')->count();
+
+        return view('dashboard.admin', compact('stats', 'recentOrders', 'orderStatusSummary', 'pendingOrdersCount'));
     }
 
     /**

@@ -13,6 +13,10 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::withCount('books')->paginate(10);
+        // Check if this is an admin request (admin categories index has search)
+        if (request()->has('search') || request()->routeIs('admin.categories.*')) {
+            return view('admin.categories.index', compact('categories'));
+        }
         return view('categories.index', compact('categories'));
     }
 
@@ -21,6 +25,10 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        // Admin create view
+        if (request()->routeIs('admin.categories.*')) {
+            return view('admin.categories.create');
+        }
         return view('categories.create');
     }
 
@@ -36,6 +44,11 @@ class CategoryController extends Controller
 
         Category::create($validated);
 
+        // Redirect based on route type
+        if (request()->routeIs('admin.categories.*')) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Category created successfully!');
+        }
         return redirect()->route('categories.index')
             ->with('success', 'Category created successfully!');
     }
@@ -54,6 +67,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        if (request()->routeIs('admin.categories.*')) {
+            return view('admin.categories.edit', compact('category'));
+        }
         return view('categories.edit', compact('category'));
     }
 
@@ -69,6 +85,10 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
+        if (request()->routeIs('admin.categories.*')) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Category updated successfully!');
+        }
         return redirect()->route('categories.index')
             ->with('success', 'Category updated successfully!');
     }
@@ -80,6 +100,10 @@ class CategoryController extends Controller
     {
         $category->delete();
 
+        if (request()->routeIs('admin.categories.*')) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Category deleted successfully!');
+        }
         return redirect()->route('categories.index')
             ->with('success', 'Category deleted successfully!');
     }

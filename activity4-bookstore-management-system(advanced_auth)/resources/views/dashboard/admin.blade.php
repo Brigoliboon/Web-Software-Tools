@@ -9,78 +9,7 @@
 @section('content')
 <div class="py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Quick Actions -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <!-- Books Management -->
-            <a href="{{ route('admin.books.index') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition p-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 bg-indigo-100 rounded-md p-3">
-                        <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Books</dt>
-                            <dd class="text-lg font-semibold text-gray-900">Manage</dd>
-                        </dl>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Categories Management -->
-            <a href="{{ route('admin.categories.index') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition p-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 bg-green-100 rounded-md p-3">
-                        <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Categories</dt>
-                            <dd class="text-lg font-semibold text-gray-900">Manage</dd>
-                        </dl>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Users Management -->
-            <a href="{{ route('admin.users.index') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition p-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 bg-purple-100 rounded-md p-3">
-                        <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Users</dt>
-                            <dd class="text-lg font-semibold text-gray-900">Manage</dd>
-                        </dl>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Pending Orders -->
-            <a href="{{ route('admin.orders.pending') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition p-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 bg-yellow-100 rounded-md p-3">
-                        <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Pending Orders</dt>
-                            <dd class="text-lg font-semibold text-gray-900">{{ $orderStatusSummary['pending'] ?? 0 }}</dd>
-                        </dl>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <!-- Statistics Cards -->
+        <!-- Stats Summary -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div class="bg-white overflow-hidden shadow rounded-lg">
                 <div class="p-5">
@@ -155,6 +84,66 @@
             </div>
         </div>
 
+        <!-- Quick Actions -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <!-- Books Management -->
+            <a href="{{ route('admin.books.index') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition p-6 flex flex-col items-center text-center group">
+                <div class="flex-shrink-0 bg-indigo-100 rounded-md p-4 group-hover:bg-indigo-200 transition">
+                    <svg class="h-8 w-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Books</h3>
+                    <p class="text-sm text-gray-500">Manage inventory</p>
+                </div>
+            </a>
+
+            <!-- Categories Management -->
+            <a href="{{ route('admin.categories.index') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition p-6 flex flex-col items-center text-center group">
+                <div class="flex-shrink-0 bg-green-100 rounded-md p-4 group-hover:bg-green-200 transition">
+                    <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    </svg>
+                </div>
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Categories</h3>
+                    <p class="text-sm text-gray-500">Organize books</p>
+                </div>
+            </a>
+
+            <!-- Pending Orders -->
+            <a href="{{ route('admin.orders.pending') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition p-6 flex flex-col items-center text-center group">
+                <div class="flex-shrink-0 bg-yellow-100 rounded-md p-4 group-hover:bg-yellow-200 transition relative">
+                    <svg class="h-8 w-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    @if($pendingOrdersCount > 0)
+                    <span class="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full">
+                        {{ $pendingOrdersCount }}
+                    </span>
+                    @endif
+                </div>
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Pending Orders</h3>
+                    <p class="text-sm text-gray-500">Review approvals</p>
+                </div>
+            </a>
+
+            <!-- Order Management -->
+            <a href="{{ route('admin.orders.index') }}" class="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition p-6 flex flex-col items-center text-center group">
+                <div class="flex-shrink-0 bg-blue-100 rounded-md p-4 group-hover:bg-blue-200 transition">
+                    <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M7 5v14m8-14v14"></path>
+                    </svg>
+                </div>
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold text-gray-900">All Orders</h3>
+                    <p class="text-sm text-gray-500">View history</p>
+                </div>
+            </a>
+        </div>
+
         <!-- Order Status Summary -->
         <div class="bg-white shadow rounded-lg mb-8">
             <div class="px-4 py-5 sm:px-6">
@@ -186,8 +175,11 @@
             <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">Recent Orders</h3>
                 <div class="flex gap-2">
-                    <a href="{{ route('admin.orders.pending') }}" class="text-sm text-yellow-600 hover:text-yellow-900 font-medium">
+                    <a href="{{ route('admin.orders.pending') }}" class="text-sm text-yellow-600 hover:text-yellow-900 font-medium flex items-center gap-2">
                         Pending ({{ $orderStatusSummary['pending'] ?? 0 }})
+                        @if($orderStatusSummary['pending'] ?? 0 > 0)
+                        <span class="bg-red-500 text-white text-xs rounded-full px-2 py-0.5">{{ $pendingOrdersCount }}</span>
+                        @endif
                     </a>
                     <span class="text-gray-300">|</span>
                     <a href="{{ route('orders.index') }}" class="text-sm text-indigo-600 hover:text-indigo-900">View All</a>

@@ -70,6 +70,10 @@ class BookController extends Controller
         $books = $query->paginate(12);
         $categories = Category::all();
 
+        // Check if admin request
+        if (request()->routeIs('admin.books.*')) {
+            return view('admin.books.index', compact('books', 'categories'));
+        }
         return view('books.index', compact('books', 'categories'));
     }
 
@@ -79,6 +83,9 @@ class BookController extends Controller
     public function create()
     {
         $categories = Category::all();
+        if (request()->routeIs('admin.books.*')) {
+            return view('admin.books.create', compact('categories'));
+        }
         return view('books.create', compact('categories'));
     }
 
@@ -107,6 +114,10 @@ class BookController extends Controller
 
         Book::create($validated);
 
+        if (request()->routeIs('admin.books.*')) {
+            return redirect()->route('admin.books.index')
+                ->with('success', 'Book added successfully!');
+        }
         return redirect()->route('books.index')
             ->with('success', 'Book added successfully!');
     }
@@ -126,6 +137,9 @@ class BookController extends Controller
     public function edit(Book $book)
     {
         $categories = Category::all();
+        if (request()->routeIs('admin.books.*')) {
+            return view('admin.books.edit', compact('book', 'categories'));
+        }
         return view('books.edit', compact('book', 'categories'));
     }
 
@@ -150,7 +164,7 @@ class BookController extends Controller
             if ($book->cover_image) {
                 $this->imageService->deleteImage($book->cover_image);
             }
-            
+
             // Store new image and create thumbnail
             $imageData = $this->imageService->storeImage($request->file('cover_image'), 'covers');
             $validated['cover_image'] = $imageData['path'];
@@ -159,6 +173,10 @@ class BookController extends Controller
 
         $book->update($validated);
 
+        if (request()->routeIs('admin.books.*')) {
+            return redirect()->route('admin.books.index')
+                ->with('success', 'Book updated successfully!');
+        }
         return redirect()->route('books.show', $book)
             ->with('success', 'Book updated successfully!');
     }
@@ -172,9 +190,13 @@ class BookController extends Controller
         if ($book->cover_image) {
             $this->imageService->deleteImage($book->cover_image);
         }
-        
+
         $book->delete();
 
+        if (request()->routeIs('admin.books.*')) {
+            return redirect()->route('admin.books.index')
+                ->with('success', 'Book deleted successfully!');
+        }
         return redirect()->route('books.index')
             ->with('success', 'Book deleted successfully!');
     }

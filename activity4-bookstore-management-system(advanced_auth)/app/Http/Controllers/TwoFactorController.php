@@ -64,7 +64,10 @@ class TwoFactorController extends Controller
         $result = $this->twoFactorService->enableForUser($user);
 
         // Store the secret temporarily for backup codes display
-        session(['two_factor_secret' => $result['secret']]);
+        session([
+            'two_factor_secret' => $result['secret'],
+            'recovery_codes' => $result['recovery_codes']
+        ]);
 
         // Send notification
         $user->notify(new TwoFactorEnabledNotification());
@@ -80,15 +83,16 @@ class TwoFactorController extends Controller
     public function showBackupCodes()
     {
         $secret = session('two_factor_secret', null);
-        
+        $recovery_codes = session('recovery_codes', []);
+
         if (!$secret) {
             return redirect()->route('profile.edit');
         }
 
         // Clear the session
-        session()->forget('two_factor_secret');
+        session()->forget(['two_factor_secret', 'recovery_codes']);
 
-        return view('auth.two-factor.backup-codes');
+        return view('auth.two-factor.backup-codes', compact('recovery_codes'));
     }
 
     /**
@@ -118,6 +122,20 @@ class TwoFactorController extends Controller
     }
 
     /**
+     * Show the 2FA verification page.
+     */
+    public function showVerify()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Send new OTP code via email
+        $otp = $this->twoFactorService->sendOTPViaEmail($user);
+
+        return view('auth.two-factor.verify');
+    }
+
+    /**
      * Verify 2FA code during login.
      */
     public function verify(Request $request)
@@ -128,10 +146,15 @@ class TwoFactorController extends Controller
 
         /** @var User $user */
         $user = Auth::user();
-        
-        // Try OTP first
+
+        // First try email-based OTP verification (session-stored)
+        if ($this->twoFactorService->verifyOTPFromEmail($request->code)) {
+            session(['two_factor_verified' => true]);
+            return redirect()->intended(route('dashboard'));
+        }
+
+        // Try TOTP-based OTP verification (authenticator app)
         $secret = $this->twoFactorService->decryptSecret($user->two_factor_secret);
-        
         if ($this->twoFactorService->verifyOTP($secret, $request->code)) {
             session(['two_factor_verified' => true]);
             return redirect()->intended(route('dashboard'));
@@ -190,8 +213,11 @@ class TwoFactorController extends Controller
         // Enable 2FA for the user
         $result = $this->twoFactorService->enableForUser($user);
 
-        // Store secret for backup codes display
-        session(['two_factor_secret' => $result['secret']]);
+        // Store secret and recovery codes for backup codes display
+        session([
+            'two_factor_secret' => $result['secret'],
+            'recovery_codes' => $result['recovery_codes']
+        ]);
 
         // Send notification
         $user->notify(new TwoFactorEnabledNotification());

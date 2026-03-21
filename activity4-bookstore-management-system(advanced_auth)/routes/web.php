@@ -59,7 +59,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/two-factor/enable', [TwoFactorController::class, 'enable'])->name('two-factor.enable');
     Route::post('/two-factor/disable', [TwoFactorController::class, 'disable'])->name('two-factor.disable');
     Route::get('/two-factor/backup-codes', [TwoFactorController::class, 'showBackupCodes'])->name('two-factor.backup-codes');
-    Route::post('/two-factor/verify', [TwoFactorController::class, 'verify'])->name('two-factor.verify');
+    Route::get('/two-factor/verify', [TwoFactorController::class, 'showVerify'])->name('two-factor.verify');
+    Route::post('/two-factor/verify', [TwoFactorController::class, 'verify'])->name('two-factor.verify.post');
     Route::post('/two-factor/regenerate', [TwoFactorController::class, 'regenerateBackupCodes'])->name('two-factor.regenerate');
 });
 
